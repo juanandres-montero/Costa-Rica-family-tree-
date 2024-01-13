@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ejecutar Script</title>
+</head>
+<body>
+  <h1>Ejecutar Script</h1>
+  <form action="/ejecutar_script" method="post">
+    <label for="numero">Introduce un número:</label>
+    <input type="number" name="numero" required>
+    <button type="submit">Ejecutar</button>
+  </form>
+
+  {% if salida %}
+    <h2>Salida del script:</h2>
+    <pre>{{ salida }}</pre>
+  {% endif %}
+</body>
+</html>
