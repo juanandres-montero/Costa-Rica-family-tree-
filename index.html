@@ -7,16 +7,17 @@
   <link rel="stylesheet" href="/templates/styles.css">
 </head>
 <body>
-  <h1>Ejecutar Script</h1>
+  <h1>Árbol Familiar - Costa Rica</h1>
+  <h2>Introducción de datos:</h2>
+  <p>Este script en PHP recibe un número de cédula y devuelve el árbol genealógico de la persona correspondiente.</p>
+  <p>Recuerde que el número de cédula debe ser de 9 dígitos y debe ser un número válido.</p>
+  <p>Para más información sobre el funcionamiento del script, ingrese al repositorio de GitHub: <a href="">
   <form action="/ejecutar_script" method="post">
-    <label for="numero">Introduce un número:</label>
+    <label for="numero">Introduce tu número de cédula:</label>
     <input type="number" name="numero" required>
     <button type="submit">Ejecutar</button>
   </form>
-
-  {% if salida %}
     <h2>Salida del script:</h2>
     <pre>{{ salida }}</pre>
-  {% endif %}
 </body>
 </html>
