@@ -5,7 +5,7 @@ import pandas as pd
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 #@markdown # Encuentre su árbol familiar
-subprocess.check_call(['python', '-m', 'pip', 'install', 'lxml', 'webdriver_manager', 'pandas', 'chromedriver-autoinstaller'])
+#subprocess.check_call(['python', '-m', 'pip', 'install', 'lxml', 'webdriver_manager', 'pandas', 'chromedriver-autoinstaller'])
 import warnings
 warnings.filterwarnings('ignore')
 def get_info(cedula):
