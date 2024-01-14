@@ -9,13 +9,35 @@
 <body>
   <h1>Árbol Familiar - Costa Rica</h1>
   <h2>Introducción de datos:</h2>
-  <p>Este script en PHP recibe un número de cédula y devuelve el árbol genealógico de la persona correspondiente.</p>
+  <p>Este script en Python recibe un número de cédula y devuelve el árbol genealógico de la persona correspondiente.</p>
   <p>Recuerde que el número de cédula debe ser de 9 dígitos y debe ser un número válido.</p>
   <p>Para más información sobre el funcionamiento del script, ingrese al repositorio de GitHub: <a href="https://github.com/juanandres-montero/arbolfamiliar_CostaRica">Link</a></p>
-  <form method="post" action="/submit_form">
+  <form id="cedulaForm">
     <label for="numero">Introduce tu número de cédula:</label>
-    <input type="number" name="numero" required>
-    <button type="submit">Ejecutar</button>
+    <input type="number" name="numero" id="numero" required>
+    <button type="button" onclick="executeScript()">Ejecutar</button>
   </form>
+
+  <div id="result"></div>
+
+  <script>
+    function executeScript() {
+      var cedula = document.getElementById("numero").value;
+      var url = "/afcr.py";
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 'numero': cedula }),
+      })
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("result").innerHTML = "<h2>Resultado del script:</h2><pre>" + data + "</pre>";
+      })
+      .catch(error => console.error('Error:', error));
+    }
+  </script>
 </body>
 </html>

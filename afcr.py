@@ -4,6 +4,11 @@ import time
 import pandas as pd
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+import cgi
+
+form = cgi.FieldStorage()
+
+print(form)
 #@markdown # Encuentre su árbol familiar
 #subprocess.check_call(['python', '-m', 'pip', 'install', 'lxml', 'webdriver_manager', 'pandas', 'chromedriver-autoinstaller'])
 import warnings
@@ -36,7 +41,8 @@ def get_info_by_name(nombre,apellido1,apellido2):
   options.add_argument('--headless')
   options.add_argument('--no-sandbox')
   options.add_argument('--disable-dev-shm-usage')
-  driver = webdriver.Chrome(options=options)
+  chrome_driver_path = 'C:/Users/juanm/Documents/Respaldo/juanandres-montero/Family-Tree/arbol-familiar-costarricense/arbol-familiar-costarricense/packages/chromedriver.exe'
+  driver = webdriver.Chrome(executable_path=chrome_driver_path, options=options)
   driver.get('https://servicioselectorales.tse.go.cr/chc/consulta_nombres.aspx')
   # Enter the cedula number
   box = driver.find_element('xpath','//*[@id="txtnombre"]')
@@ -84,6 +90,7 @@ def tree(data,yo):
   madre_c = data.iloc[0, 10]
   print(f"Padre de {yo}: {padre}")
   print(f"Madre de {yo}: {madre}")
+  print("\n")
   if madre_c.isalpha() or padre_c.isalpha():
     cedulas = None
     return cedulas
@@ -133,42 +140,42 @@ def tree(data,yo):
   return cedulas
 
 def main():
-  cedula = input("Ingrese numero de cedula: ") #@param {type:"string"}
+  if "numero" in form:
+    cedula = form.getvalue("numero")
+  #cedula = input("Ingrese numero de cedula: ") #@param {type:"string"}
+  #cedula = '305390329'
   df = pd.DataFrame()
-  df = df.append(get_info(cedula))
   try:
-    print('hello')
     df = df.append(get_info(cedula))
   except Exception as e:
     print('Error: Invalid cedula number')
   data = pd.DataFrame()
   data = data.append(format(df))
-  print(data)
-  if not data.empty and data.shape[1] >= 2:
+  if not data.empty:
     yo = data.iloc[0, 1]
     print(f'Mi nombre es: {yo}')
     cedulas = tree(data,yo)
-    ids = list(cedulas)
-    while len(ids) > 0:
-      for cedula in ids:
-        df = pd.DataFrame()
-        data = pd.DataFrame()
-        df = df.append(get_info(cedula))
-        data = data.append(format(df))
-        yo = data.iloc[0, 1]
-        tupla = tree(data,yo)
-        try:
-          lista_t = list(tupla)
-        except:
-          lista_t = None
-        #try:
-        if lista_t != None:
-          ids.extend(lista_t)
-          print(ids)
-        #except:
-          #print(f'Los padres de {yo} no tienen la cedula registrada en el TSE')
-        data = pd.DataFrame()
-        df = pd.DataFrame()
+    if cedulas != None:
+      ids = list(cedulas)
+      while len(ids) > 0:
+        for cedula in ids:
+          df = pd.DataFrame()
+          data = pd.DataFrame()
+          df = df.append(get_info(cedula))
+          data = data.append(format(df))
+          yo = data.iloc[0, 1]
+          tupla = tree(data,yo)
+          try:
+            lista_t = list(tupla)
+          except:
+            lista_t = None
+          #try:
+          if lista_t != None:
+            ids.extend(lista_t)
+          #except:
+            #print(f'Los padres de {yo} no tienen la cedula registrada en el TSE')
+          data = pd.DataFrame()
+          df = pd.DataFrame()
 
 #if __name__ == '__main__':
 main()
