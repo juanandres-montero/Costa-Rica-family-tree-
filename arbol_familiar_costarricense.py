@@ -1,22 +1,11 @@
 import subprocess
 import sys
-#subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'selenium', 'webdriver_manager','pandas', 'sys', 'time','chromium-chromedriver'])
-
-sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
+import time
+import pandas as pd
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-import pandas as pd
-
-
-# Install the necessary packages using Python's pip
-
-# Install chromium-chromedriver using apt
-subprocess.check_call(['apt-get', 'update'])
-subprocess.check_call(['apt-get', 'install', '-y', 'chromium-chromedriver'])
-subprocess.check_call(['cp', '/packages', '/usr/bin'])
 #@markdown # Encuentre su árbol familiar
-from io import open_code
-import time
+subprocess.check_call(['python', '-m', 'pip', 'install', 'lxml', 'webdriver_manager', 'pandas', 'chromedriver-autoinstaller'])
 import warnings
 warnings.filterwarnings('ignore')
 def get_info(cedula):
@@ -24,8 +13,10 @@ def get_info(cedula):
   options.add_argument('--headless')
   options.add_argument('--no-sandbox')
   options.add_argument('--disable-dev-shm-usage')
-  driver = webdriver.Chrome(options=options)
+  chrome_driver_path = 'C:/Users/juanm/Documents/Respaldo/juanandres-montero/Family-Tree/arbol-familiar-costarricense/arbol-familiar-costarricense/packages/chromedriver.exe'
+  driver = webdriver.Chrome(executable_path=chrome_driver_path, options=options)
   driver.get('https://servicioselectorales.tse.go.cr/chc/consulta_cedula.aspx')
+  driver.save_screenshot('screenshot.png')
   # Enter the cedula number
   box = driver.find_element('xpath','//*[@id="txtcedula"]')
   box.send_keys(cedula)
@@ -68,6 +59,8 @@ def get_info_by_name(nombre,apellido1,apellido2):
 
 def format(df):
   df_transposed = df.transpose()
+  if df_transposed.empty:
+    return df_transposed
   f0 = df_transposed.iloc[[0]]
   f1 = df_transposed.iloc[[1]]
   f2 = df_transposed.iloc[[2]]
@@ -140,39 +133,43 @@ def tree(data,yo):
   return cedulas
 
 def main():
-  cedula = "305390329" #@param {type:"string"}
+  cedula = input("Ingrese numero de cedula: ") #@param {type:"string"}
   df = pd.DataFrame()
+  df = df.append(get_info(cedula))
   try:
+    print('hello')
     df = df.append(get_info(cedula))
-  except:
+  except Exception as e:
     print('Error: Invalid cedula number')
   data = pd.DataFrame()
   data = data.append(format(df))
-  yo = data.iloc[0, 1]
-  print(f'Mi nombre es: {yo}')
-  cedulas = tree(data,yo)
-  ids = list(cedulas)
-  while len(ids) > 0:
-    for cedula in ids:
-      df = pd.DataFrame()
-      data = pd.DataFrame()
-      df = df.append(get_info(cedula))
-      data = data.append(format(df))
-      yo = data.iloc[0, 1]
-      tupla = tree(data,yo)
-      try:
-        lista_t = list(tupla)
-      except:
-        lista_t = None
-      #try:
-      if lista_t != None:
-        ids.extend(lista_t)
-        print(ids)
-      #except:
-        #print(f'Los padres de {yo} no tienen la cedula registrada en el TSE')
-      data = pd.DataFrame()
-      df = pd.DataFrame()
+  print(data)
+  if not data.empty and data.shape[1] >= 2:
+    yo = data.iloc[0, 1]
+    print(f'Mi nombre es: {yo}')
+    cedulas = tree(data,yo)
+    ids = list(cedulas)
+    while len(ids) > 0:
+      for cedula in ids:
+        df = pd.DataFrame()
+        data = pd.DataFrame()
+        df = df.append(get_info(cedula))
+        data = data.append(format(df))
+        yo = data.iloc[0, 1]
+        tupla = tree(data,yo)
+        try:
+          lista_t = list(tupla)
+        except:
+          lista_t = None
+        #try:
+        if lista_t != None:
+          ids.extend(lista_t)
+          print(ids)
+        #except:
+          #print(f'Los padres de {yo} no tienen la cedula registrada en el TSE')
+        data = pd.DataFrame()
+        df = pd.DataFrame()
 
-if __name__ == '__main__':
-  main()
+#if __name__ == '__main__':
+main()
 #@markdown *Código utiliza solo la información disponible en el TSE
