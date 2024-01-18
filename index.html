@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ejecutar Script</title>
+  <link rel="stylesheet" href="https://pyscript.net/releases/2023.11.1/core.css" />
+  <script type="module" src="https://pyscript.net/releases/2023.11.1/core.js"></script>
 </head>
 <body>
   <h1>Árbol Familiar - Costa Rica</h1>
@@ -16,27 +18,7 @@
     <input type="number" name="numero" id="numero" required>
     <button type="button" onclick="executeScript()">Ejecutar</button>
   </form>
-
   <div id="result"></div>
-
-  <script>
-    function executeScript() {
-      var cedula = document.getElementById("numero").value;
-      var url = 'https://your-flask-app-url/execute'; // Replace with your actual Flask app URL
-
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: 'numero=' + cedula,
-      })
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("result").innerHTML = "<h2>Resultado del script:</h2><pre>" + data + "</pre>";
-      })
-      .catch(error => console.error('Error:', error));
-    }
-  </script>
+  <py-script>print('Now you can!') </py-script>
 </body>
 </html>
