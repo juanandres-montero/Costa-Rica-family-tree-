@@ -16,7 +16,7 @@
   <form id="cedulaForm">
     <label for="numero">Introduce tu número de cédula:</label>
     <input type="number" name="numero" id="numero" required>
-    <button type="button" onclick="executeScript()">Ejecutar</button>
+    <button type="button" onclick="performWebSearch(document.getElementById('numero').value)">Ejecutar</button>
   </form>
   <div id="result"></div>
 </body>
