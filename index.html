@@ -5,9 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ejecutar Script</title>
   <link rel="stylesheet" href="/templates/styles.css">
-  <script src="afcr.js"></script>
+  <script src="index.js"></script>
 </head>
 <body>
+  <script src="https://unpkg.com/puppeteer-web">
+  </script>
+
+  <script>
+    const browser = await puppeteer.connect({
+      browserWSEndpoint: `ws://0.0.0.0:8080`, // <-- connect to a server running somewhere
+      ignoreHTTPSErrors: true
+    });
+
+    const pagesCount = (await browser.pages()).length;
+    const browserWSEndpoint = await browser.wsEndpoint();
+    console.log({ browserWSEndpoint, pagesCount });
+  </script>
   <h1>Árbol Familiar - Costa Rica (sitio web en construcción)</h1>
   <h2>Introducción de datos:</h2>
   <p>Este script en Python recibe un número de cédula y devuelve el árbol genealógico de la persona correspondiente.</p>

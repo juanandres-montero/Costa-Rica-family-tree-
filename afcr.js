@@ -1,6 +1,5 @@
-const { Builder, By, Key, until } = require('selenium-webdriver');
-
 async function performWebSearch(cedulaNumber) {
+    const { Builder, By, Key, until } = require('selenium-webdriver');
     // Set up the Selenium WebDriver
     const driver = await new Builder().forBrowser('chrome').build();
 
@@ -31,7 +30,3 @@ async function performWebSearch(cedulaNumber) {
         await driver.quit();
     }
 }
-
-// Prompt the user for the cedula number and perform the web search
-const cedulaNumber = prompt('Enter the cedula number:');
-performWebSearch(cedulaNumber);
