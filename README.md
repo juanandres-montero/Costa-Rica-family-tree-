@@ -31,6 +31,6 @@ Aquí está una explicación detallada del código:
    
    - Utiliza la función `tree()` para buscar el árbol genealógico de la persona y actualizar `string_var`.
    
-   - Repite el proceso para los padres de la persona (hasta 3 generaciones). **Este proceso puede editarse si se cambia el valor de ```python i=3``` en la función ```python main```**
+   - Repite el proceso para los padres de la persona (hasta 3 generaciones). **El nivel de generaciones puede editarse si se cambia el valor de ```i=3``` en la función ```main()```**
    
 7. Finalmente, se imprime el árbol genealógico resultante en la consola.
