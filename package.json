@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "puppeteer": "^21.7.0",
-    "selenium": "^2.20.0",
-    "selenium-webdriver": "^4.16.0"
-  }
-}
